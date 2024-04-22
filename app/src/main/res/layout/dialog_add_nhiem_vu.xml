@@ -108,6 +108,18 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <Button
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:id="@+id/btn_sua"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_button"
+                android:text="Sửa" />
+
             <Button
                 android:layout_marginTop="20dp"
                 android:id="@+id/btn_them"
@@ -119,6 +131,7 @@
                 android:text="Thêm" />
 
             <Button
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:id="@+id/btn_xoa"
                 android:layout_marginBottom="20dp"

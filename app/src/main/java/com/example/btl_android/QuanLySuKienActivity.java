@@ -42,7 +42,7 @@ public class QuanLySuKienActivity extends AppCompatActivity  {
     ArrayList<SuKienModal> data = new ArrayList<>();
 
     AlarmManager alarmManager ;
-    Intent intent = new Intent(QuanLySuKienActivity.this,AlarmReceiver.class);
+    Intent intent;
     PendingIntent pendingIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class QuanLySuKienActivity extends AppCompatActivity  {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE) ;
         mDbHelper= new DBHelper(this.getApplicationContext());
 
@@ -102,29 +101,31 @@ public class QuanLySuKienActivity extends AppCompatActivity  {
         NumberPicker minutePicker = dialog.findViewById(R.id.minutePicker);
         Button btnThem = dialog.findViewById(R.id.btn_them);
         Button btnXoa = dialog.findViewById(R.id.btn_xoa);
+        Button btnSua = dialog.findViewById(R.id.btn_sua);
         EditText editText = dialog.findViewById(R.id.edTenSuKien);
-
-        btnThem.setText("Sửa");
 
 // Thiết lập giá trị tối thiểu và tối đa cho giờ (từ 0 đến 23)
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(23);
         hourPicker.setValue(modal.gio);
-        hourPicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
+//        hourPicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
 
 // Thiết lập giá trị tối thiểu và tối đa cho phút (từ 0 đến 59)
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
         minutePicker.setValue(modal.phut);
-        minutePicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
+//        minutePicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
 
         editText.setText(modal.getTenSuKien());
-        btnThem.setOnClickListener(new View.OnClickListener() {
+        btnSua.setVisibility(View.VISIBLE);
+        btnXoa.setVisibility(View.VISIBLE);
+        btnThem.setVisibility(View.GONE);
+        btnSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String tensukien = editText.getText().toString().trim();
                 if (tensukien.length()!=0){
-                    mDbHelper.addSuKien(new SuKienModal(tensukien,hourPicker.getValue(),minutePicker.getValue()));
+                    mDbHelper.updateSuKien(modal.ID_SuKien,new SuKienModal(tensukien,hourPicker.getValue(),minutePicker.getValue()));
                     update();
                     dialog.dismiss();
                 }
@@ -174,22 +175,27 @@ public class QuanLySuKienActivity extends AppCompatActivity  {
 // Thiết lập giá trị tối thiểu và tối đa cho giờ (từ 0 đến 23)
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(23);
-        hourPicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
+//        hourPicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
 
 // Thiết lập giá trị tối thiểu và tối đa cho phút (từ 0 đến 59)
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
-        minutePicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
+//        minutePicker.setTextColor(Color.parseColor("#FF0000")); // Đặt màu chữ thành màu đỏ
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String tensukien = editText.getText().toString().trim();
                 if (tensukien.length()!=0){
-                    mDbHelper.addSuKien(new SuKienModal(tensukien,hourPicker.getValue(),minutePicker.getValue()));
+                    intent = new Intent(QuanLySuKienActivity.this,AlarmReceiver.class);
+                    SuKienModal modal = new SuKienModal(tensukien,hourPicker.getValue(),minutePicker.getValue());
+                    mDbHelper.addSuKien(modal);
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, hourPicker.getValue()); // giờ (gio là biến chứa giá trị giờ)
                     calendar.set(Calendar.MINUTE, minutePicker.getValue()); // phút (phut là biến chứa giá trị phút)
+                    intent.setAction("MyAction");
+                    intent.putExtra("ten",tensukien);
+                    intent.putExtra("thoigian",hourPicker.getValue() + "h" +minutePicker.getValue());
 
                     pendingIntent = PendingIntent.getBroadcast(
                             QuanLySuKienActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT
@@ -216,5 +222,6 @@ public class QuanLySuKienActivity extends AppCompatActivity  {
         adapter = new SuKienAdapter(data,getApplicationContext());
         lvSuKien.setAdapter(adapter);
     }
+
 
 }
