@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+    <ImageView
+        android:id="@+id/logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"/>
+    <Button
+        android:textColor="@color/white"
+        android:padding="20dp"
+        android:id="@+id/QuanLySuKien"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        android:background="@drawable/custom_button"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quản lý sự kiện"/>
+
+    <Button
+        android:textColor="@color/white"
+        android:padding="20dp"
+        android:background="@drawable/custom_button"
+        android:layout_marginTop="50dp"
+        android:id="@+id/QuanLyNhiemVu"
+        app:layout_constraintTop_toBottomOf="@id/QuanLySuKien"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quản lý nhiệm vụ và Deadline"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
